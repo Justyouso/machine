@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# @Author: wangchao
 # @Time: 19-4-25 上午11:55
 from keras.datasets import reuters
 import numpy as np

@@ -7,7 +7,8 @@ import tensorflow as tf
 from keras import backend as K
 from keras import layers
 from keras import models
-from keras.datasets import mnist
+
+
 from keras.utils import to_categorical
 from sklearn.metrics import roc_curve, auc
 

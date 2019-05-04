@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# @Author: wangchao
 # @Time: 19-4-26 下午2:00
 from keras.datasets import boston_housing
 from keras import models, layers

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# @Author: wangchao
 # @Time: 19-4-23 上午10:21
 import numpy as np
 from keras import layers

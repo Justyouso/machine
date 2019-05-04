@@ -32,7 +32,37 @@ train_labels = to_categorical(train_labels)
 test_labels = to_categorical(test_labels)
 
 # 训练模型
-network.fit(train_images, train_labels, epochs=5, batch_size=128)
+history =network.fit(train_images, train_labels, epochs=5, batch_size=128,
+            validation_data=(test_images, test_labels))
 
+
+
+# 取出精度
+history_dict = history.history
+
+loss_values = history_dict["loss"]
+val_loss_values = history_dict["val_loss"]
+epochs = range(1,len(loss_values)+1)
+
+# 绘制训练损失和验证损失
+plt.plot(epochs,loss_values,'bo',label='Training loss')
+plt.plot(epochs,val_loss_values,'b',label='Validation loss')
+plt.title('Training and Validation loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
+# 清空图像
+plt.clf()
+acc = history_dict['acc']
+val_acc = history_dict['val_acc']
+plt.plot(epochs,acc,'bo',label='Training acc')
+plt.plot(epochs,val_acc,'b',label='Validation acc')
+plt.title('Training and Validation Acc')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
 # 测试模型
-test_loss, test_acc = network.evaluate(test_images, test_labels)
+# test_loss, test_acc = network.evaluate(test_images, test_labels)
