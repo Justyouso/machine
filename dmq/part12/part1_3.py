@@ -88,3 +88,4 @@ y_pred_kmeans = kmeans.fit_predict(x)
 # Evaluate the K-Means clustering accuracy.
 
 acc = accuracy_score(y, y_pred_kmeans)
+print(acc)

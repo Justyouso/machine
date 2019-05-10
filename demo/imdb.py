@@ -28,8 +28,8 @@ y_test = np.asarray(test_labels).astype('float32')
 
 # 加载网络
 model = models.Sequential()
-model.add(layers.Dense(32, activation='relu', input_shape=(10000,)))
-model.add(layers.Dense(64, activation='relu'))
+model.add(layers.Dense(4, activation='relu', input_shape=(10000,)))
+model.add(layers.Dense(4, activation='relu'))
 model.add(layers.Dense(1, activation='sigmoid'))
 
 # 编译模型
@@ -43,7 +43,7 @@ y_val = y_train[:10000]
 partial_y_train = y_train[10000:]
 
 # 训练并计算精度
-history = model.fit(partial_x_train, partial_y_train, epochs=2, batch_size=512,
+history = model.fit(partial_x_train, partial_y_train, epochs=20, batch_size=512,
                     validation_data=(x_val, y_val))
 # 取出精度
 history_dict = history.history
