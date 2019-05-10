@@ -6,14 +6,24 @@
 import os,shutil
 
 # 源数据
-original_dataset_dir = '/home/justyouso/space/data/machine/dogs-vs-cats/train/'
+# original_dataset_dir = '/home/justyouso/space/data/machine/dogs-vs-cats/train/'
+#
+# train_dogs_dir = "/home/justyouso/space/data/machine/dogs-cats/train/dogs"
+# train_cats_dir = "/home/justyouso/space/data/machine/dogs-cats/train/cats"
+# validation_dogs_dir = "/home/justyouso/space/data/machine/dogs-cats/validation/dogs"
+# validation_cats_dir = "/home/justyouso/space/data/machine/dogs-cats/validation/cats"
+# test_dogs_dir = "/home/justyouso/space/data/machine/dogs-cats/test/dogs"
+# test_cats_dir = "/home/justyouso/space/data/machine/dogs-cats/test/cats"
 
-train_dogs_dir = "/home/justyouso/space/data/machine/dogs-cats/train/dogs"
-train_cats_dir = "/home/justyouso/space/data/machine/dogs-cats/train/cats"
-validation_dogs_dir = "/home/justyouso/space/data/machine/dogs-cats/validation/dogs"
-validation_cats_dir = "/home/justyouso/space/data/machine/dogs-cats/validation/cats"
-test_dogs_dir = "/home/justyouso/space/data/machine/dogs-cats/test/dogs"
-test_cats_dir = "/home/justyouso/space/data/machine/dogs-cats/test/cats"
+base_dir = '/workspace/data/machine'
+original_dataset_dir = base_dir + '/dogs-vs-cats/train/'
+
+train_dogs_dir = base_dir + "/dogs-cats/train/dogs"
+train_cats_dir = base_dir + "/dogs-cats/train/cats"
+validation_dogs_dir = base_dir + "/dogs-cats/validation/dogs"
+validation_cats_dir = base_dir + "/dogs-cats/validation/cats"
+test_dogs_dir = base_dir + "/dogs-cats/test/dogs"
+test_cats_dir = base_dir + "/dogs-cats/test/cats"
 
 # dogs训练数据(1000)
 fnames = ['dog.{}.jpg'.format(i) for i in range(1000)]
