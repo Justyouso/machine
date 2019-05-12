@@ -33,8 +33,8 @@ def build_model():
 
 # 处理图像
 def images_del():
-    train_dir = "/home/justyouso/space/data/machine/dogs-cats/train"
-    validation_dir = "/home/justyouso/space/data/machine/dogs-cats/validation"
+    train_dir = "/workspace/data/machine/dogs-cats/train"
+    validation_dir = "/workspace/data/machine/dogs-cats/validation"
 
     # 缩放1/255倍
     train_datagen = ImageDataGenerator(rescale=1. / 255)
@@ -106,6 +106,6 @@ if __name__ == "__main__":
         validation_steps=50
     )
 
-    paint_training_validation(history, 'acc')
+    # paint_training_validation(history, 'acc')
     # 保存模型
     model.save('cats_and_dogs_small_1.h5')
