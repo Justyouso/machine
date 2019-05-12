@@ -86,3 +86,8 @@ def run_aram(df, maxar, maxma, test_size = 14):
     test_predict = predict_recover(test_predict, train, diffn)
     RMSE = np.sqrt(((np.array(test_predict)-np.array(test))**2).sum()/test.size)
     print("测试集的RMSE为："+str(RMSE))
+
+
+if __name__ == "__main__":
+    data = pd.read_csv('pollution.csv')
+    run_aram(data, 6, 4)
