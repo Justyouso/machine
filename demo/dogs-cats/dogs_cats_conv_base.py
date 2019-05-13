@@ -24,7 +24,7 @@ def extract_features(directory, sample_count):
 
     # 预训练生成数据(4,4,512)
     features = np.zeros(shape=(sample_count, 4, 4, 512))
-    labels = np.zeros(shape=(sample_count,))
+    labels = np.zeros(shape=(sample_count))
     generator = datagen.flow_from_directory(
         directory=directory,
         target_size=(150, 150),
@@ -51,7 +51,7 @@ def build_model():
     model.add(layers.Dense(1, activation='sigmoid'))
 
     model.compile(loss='binary_crossentropy',
-                  optimizer=optimizers.RMSprop(lr=1e-4),
+                  optimizer=optimizers.RMSprop(lr=2e-5),
                   metrics=['acc'])
     return model
 
@@ -62,19 +62,24 @@ if __name__ == "__main__":
                       include_top=False,
                       input_shape=(150, 150, 3))
 
-    train_dir = "/workspace/data/machine/dogs-cats/train"
-    validation_dir = "/workspace/data/machine/dogs-cats/validation"
-    test_dir = "/workspace/data/machine/dogs-cats/test"
+    # train_dir = "/workspace/data/machine/dogs-cats/train"
+    # validation_dir = "/workspace/data/machine/dogs-cats/validation"
+    # test_dir = "/workspace/data/machine/dogs-cats/test"
 
-    # train_dir = "/home/justyouso/space/data/machine/dogs-cats/train"
-    # validation_dir = "/home/justyouso/space/data/machine/dogs-cats/validation"
-    # test_dir = "/home/justyouso/space/data/machine/dogs-cats/test"
+    train_dir = "/home/justyouso/space/data/machine/dogs-cats/train"
+    validation_dir = "/home/justyouso/space/data/machine/dogs-cats/validation"
+    test_dir = "/home/justyouso/space/data/machine/dogs-cats/test"
 
     # 获取提取特征
     train_features, train_labels = extract_features(train_dir, 2000)
     validation_features, validation_labels = extract_features(validation_dir,
                                                               1000)
     test_features, test_labels = extract_features(test_dir, 1000)
+
+    # 特征平展
+    train_features = np.reshape(train_features, (2000, 4 * 4 * 512))
+    validation_features = np.reshape(validation_features, (1000, 4 * 4 * 512))
+    test_features = np.reshape(test_features, (1000, 4 * 4 * 512))
 
     model = build_model()
     history = model.fit(
