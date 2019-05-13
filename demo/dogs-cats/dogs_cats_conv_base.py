@@ -8,6 +8,7 @@ import numpy as np
 from keras import models, layers, optimizers
 from keras.applications import VGG16
 from keras.preprocessing.image import ImageDataGenerator
+import matplotlib.pyplot as plt
 
 
 # 处理图像
@@ -33,10 +34,10 @@ def extract_features(directory, sample_count):
     )
     i = 0
     # 使用预训练生成数据
-    for input_batch, labels_batch in generator:
-        features_batch = conv_base.predict(input_batch)
+    for inputs_batch, labels_batch in generator:
+        features_batch = conv_base.predict(inputs_batch)
         features[i * batch_size:(i + 1) * batch_size] = features_batch
-        labels[i * batch_size:(i + 1) * batch_size] = batch_size
+        labels[i * batch_size:(i + 1) * batch_size] = labels_batch
         i += 1
         if i * batch_size >= sample_count:
             break
@@ -56,19 +57,51 @@ def build_model():
     return model
 
 
+# 绘制训练损失和验证损失
+def paint_training_validation(history, type="loss"):
+    """
+    # 绘制训练和验证图
+    :param history: 模型数据
+    :param type: {loss:损失图,acc:精度图}
+    :return: 
+    """
+    if type == "loss":
+        loss = history.history['loss']
+        val_loss = history.history['val_loss']
+        epochs = range(1, len(loss) + 1)
+        plt.plot(epochs, loss, 'bo', label='Training loss')
+        plt.plot(epochs, val_loss, 'b', label='Validation loss')
+        plt.title('Training adn Validation loss')
+        plt.xlabel('Epochs')
+        plt.ylabel('Loss')
+        plt.legend()
+        plt.show()
+    else:
+        acc = history.history['acc']
+        val_acc = history.history['val_acc']
+        epochs = range(1, len(acc) + 1)
+        plt.plot(epochs, acc, 'bo', label='Training acc')
+        plt.plot(epochs, val_acc, 'b', label='Validation acc')
+        plt.title('Training and validation accuracy')
+        plt.xlabel('Epochs')
+        plt.ylabel('Accuracy')
+        plt.legend()
+        plt.show()
+
+
 if __name__ == "__main__":
     # 预训练的卷积基
     conv_base = VGG16(weights="imagenet",
                       include_top=False,
                       input_shape=(150, 150, 3))
 
-    # train_dir = "/workspace/data/machine/dogs-cats/train"
-    # validation_dir = "/workspace/data/machine/dogs-cats/validation"
-    # test_dir = "/workspace/data/machine/dogs-cats/test"
+    train_dir = "/workspace/data/machine/dogs-cats/train"
+    validation_dir = "/workspace/data/machine/dogs-cats/validation"
+    test_dir = "/workspace/data/machine/dogs-cats/test"
 
-    train_dir = "/home/justyouso/space/data/machine/dogs-cats/train"
-    validation_dir = "/home/justyouso/space/data/machine/dogs-cats/validation"
-    test_dir = "/home/justyouso/space/data/machine/dogs-cats/test"
+    # train_dir = "/home/justyouso/space/data/machine/dogs-cats/train"
+    # validation_dir = "/home/justyouso/space/data/machine/dogs-cats/validation"
+    # test_dir = "/home/justyouso/space/data/machine/dogs-cats/test"
 
     # 获取提取特征
     train_features, train_labels = extract_features(train_dir, 2000)
@@ -89,3 +122,7 @@ if __name__ == "__main__":
         batch_size=20,
         validation_data=(validation_features, validation_labels)
     )
+    model.save('cats_and_dogs_small_3.h5')
+    # paint_training_validation(history)
+    # paint_training_validation(history,"acc")
+
