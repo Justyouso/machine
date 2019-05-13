@@ -7,6 +7,8 @@ from keras import models
 from keras import optimizers
 from keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
+from keras import regularizers
+
 
 # 构建模型
 def build_model():
@@ -21,7 +23,11 @@ def build_model():
     model.add(layers.Conv2D(128, (3, 3), activation='relu'))
     model.add(layers.MaxPool2D((2, 2)))
     model.add(layers.Flatten())
-    model.add(layers.Dense(512, activation='relu'))
+    # 随机置矩阵一半的数据为0,防止过拟合
+    model.add(layers.Dropout(0.5))
+    # 权重正则化,第二范式,防止过拟合
+    model.add(layers.Dense(512, kernel_regularizer=regularizers.l2(0.001),
+                           activation='relu'))
     model.add(layers.Dense(1, activation='sigmoid'))
 
     model.compile(loss='binary_crossentropy',
@@ -36,8 +42,15 @@ def images_del():
     train_dir = "/workspace/data/machine/dogs-cats/train"
     validation_dir = "/workspace/data/machine/dogs-cats/validation"
 
-    # 缩放1/255倍
-    train_datagen = ImageDataGenerator(rescale=1. / 255)
+    # 缩放1/255倍,数据增强,翻转,切换角度
+    train_datagen = ImageDataGenerator(rescale=1. / 255,
+                                       rotation_range=40,
+                                       width_shift_range=0.2,
+                                       height_shift_range=0.2,
+                                       shear_range=0.2,
+                                       zoom_range=0.2,
+                                       horizontal_flip=True)
+    # 验证数据集不需要增强
     validation_datagen = ImageDataGenerator(rescale=1. / 255)
 
     # 训练数据生成器
@@ -92,7 +105,7 @@ def paint_training_validation(history, type="loss"):
 
 if __name__ == "__main__":
     # 获取训练数据生成器和验证数据生成器
-    train_generator,validation_generator = images_del()
+    train_generator, validation_generator = images_del()
 
     # 获取model
     model = build_model()
@@ -108,4 +121,4 @@ if __name__ == "__main__":
 
     # paint_training_validation(history, 'acc')
     # 保存模型
-    model.save('cats_and_dogs_small_1.h5')
+    model.save('cats_and_dogs_small_2.h5')
